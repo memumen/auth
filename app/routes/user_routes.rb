@@ -2,6 +2,8 @@
 
 # UserRoutes
 class UserRoutes < Application
+  helpers Auth
+
   post '/signup' do
     user_params = validate_with!(UserParamsContract)
     result = Users::CreateService.call(*user_params.to_h.values)
@@ -27,6 +29,20 @@ class UserRoutes < Application
     else
       status 401
       error_response result.session || result.errors
+    end
+  end
+
+  post '/' do
+    result = Auth::FetchUserService.call(extracted_token['uuid'])
+
+    if result.success?
+      meta = { user_id: result.user.id }
+
+      status 200
+      json meta: meta
+    else
+      status 403
+      error_response(result.errors)
     end
   end
 end
