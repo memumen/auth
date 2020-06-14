@@ -14,6 +14,7 @@ gem 'pg'
 gem 'puma'
 gem 'rake'
 gem 'sequel'
+gem 'sequel_secure_password'
 gem 'sinatra', require: 'sinatra/base'
 gem 'sinatra-contrib'
 
